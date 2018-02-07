@@ -2,6 +2,8 @@
 import pandas as pd
 from sklearn import linear_model
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
 import csv
 import os
 import numpy
