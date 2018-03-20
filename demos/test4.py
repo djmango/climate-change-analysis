@@ -12,10 +12,9 @@ from sklearn.metrics import mean_squared_error
 
 # define where dataset is located
 csvFile = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(
-    __file__)), os.pardir)) + '\\data\\N_seaice_extent_daily_v3.csv'
+    __file__)), os.pardir)) + '/data/N_seaice_extent_daily_v3_small.csv'
 
 # convert an array of values into a dataset matrix
-
 
 def create_dataset(dataset, look_back=1):
     dataX, dataY = [], []
@@ -31,12 +30,12 @@ numpy.random.seed(3)
 
 # load dataset
 dataframe = pandas.read_csv(
-    csvFile, usecols=[0, 3], engine='python', skipfooter=3)
+    csvFile, usecols=[0, 3], engine='python', skipfooter=0)
 dataset = dataframe.values
 dataset = dataset.astype('float32')
 
 # normalize the dataset
-scaler = MinMaxScaler(feature_range=(0, 1))
+scaler = MinMaxScaler(feature_range=(0, 2))
 dataset = scaler.fit_transform(dataset)
 
 # split into train and test sets
@@ -56,10 +55,10 @@ testX = numpy.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
 
 # create and fit the LSTM network
 model = Sequential()
-model.add(LSTM(4, input_shape=(1, look_back)))
+model.add(LSTM(4, input_shape=(2, look_back)))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
-model.fit(trainX, trainY, epochs=100, batch_size=1, verbose=2)
+model.fit(trainX, trainY, epochs=5, batch_size=1, verbose=2)
 
 # make predictions
 trainPredict = model.predict(trainX)
@@ -83,7 +82,7 @@ trainPredictPlot[look_back:len(trainPredict) + look_back, :] = trainPredict
 testPredictPlot = numpy.empty_like(dataset)
 testPredictPlot[:, :] = numpy.nan
 testPredictPlot[len(trainPredict) + (look_back * 2) +
-                1:len(dataset) - 1, :] = testPredict
+                2:len(dataset) - 1, :] = testPredict
 # plot baseline and predictions
 plt.plot(scaler.inverse_transform(dataset))
 plt.plot(trainPredictPlot)
