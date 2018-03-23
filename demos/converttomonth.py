@@ -1,4 +1,4 @@
-""" the point of this is to convert the daily csv data to yearly averages and export as csv """
+""" convert the daily csv data to yearly averages and export as csv """
 
 # imports
 import os
@@ -29,7 +29,13 @@ with open(csvFile) as data:
             years.append(lastYear)
             yearSum = 0
             lastYear = row[0]
-    print(averages)
 
-plt.scatter(years[1:], averages[1:])
+# write new data
+with open("output.csv", "w", newline='') as csvFile:
+        writer = csv.writer(csvFile, delimiter=',')
+        finalData = zip(years[11:], averages[11:])
+        writer.writerows(finalData)
+
+# plot
+plt.scatter(years[11:], averages[11:])
 plt.show()
