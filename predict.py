@@ -5,7 +5,12 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import csv
+
+# define where dataset is located
+csvFile = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(
+    __file__)), os.pardir)) + '/data/averages.csv'
 
 # read data
 data = pd.read_csv(csvFile)
@@ -15,3 +20,4 @@ csvFile = os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(
     __file__)), os.pardir)) + '/data/N_seaice_extent_daily_v3_raw.csv'
 
 def predict(year):
+    pass
